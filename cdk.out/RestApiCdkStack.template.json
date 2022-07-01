@@ -1,0 +1,801 @@
+{
+ "Resources": {
+  "narutoapitableBA248BDC": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api-table/Resource"
+   }
+  },
+  "GetNarutoLambdaServiceRole4C3D2A7F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/GetNarutoLambda/ServiceRole/Resource"
+   }
+  },
+  "GetNarutoLambdaServiceRoleDefaultPolicyB13B231A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "narutoapitableBA248BDC",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "GetNarutoLambdaServiceRoleDefaultPolicyB13B231A",
+    "Roles": [
+     {
+      "Ref": "GetNarutoLambdaServiceRole4C3D2A7F"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/GetNarutoLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "GetNarutoLambdaAE0E87EA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "1a7be302ef19683bc3097bb91d2fc67acaed5a3fc49bda4e1beaf22e373d710f.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "GetNarutoLambdaServiceRole4C3D2A7F",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "PRIMARY_KEY": "id",
+      "TABLE_NAME": {
+       "Ref": "narutoapitableBA248BDC"
+      },
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "get-naruto-lambda-function",
+    "Handler": "index.handler",
+    "Runtime": "nodejs14.x"
+   },
+   "DependsOn": [
+    "GetNarutoLambdaServiceRoleDefaultPolicyB13B231A",
+    "GetNarutoLambdaServiceRole4C3D2A7F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/GetNarutoLambda/Resource",
+    "aws:asset:path": "asset.1a7be302ef19683bc3097bb91d2fc67acaed5a3fc49bda4e1beaf22e373d710f",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "PutNarutoLambdaServiceRoleFC1C9726": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/PutNarutoLambda/ServiceRole/Resource"
+   }
+  },
+  "PutNarutoLambdaServiceRoleDefaultPolicy1158CA3D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "narutoapitableBA248BDC",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PutNarutoLambdaServiceRoleDefaultPolicy1158CA3D",
+    "Roles": [
+     {
+      "Ref": "PutNarutoLambdaServiceRoleFC1C9726"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/PutNarutoLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "PutNarutoLambda0D3F62CF": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "4e090b43e678c37cf56ec441680bbcd89af876f4c9f005e7829d9648d74586e3.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "PutNarutoLambdaServiceRoleFC1C9726",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "PRIMARY_KEY": "id",
+      "TABLE_NAME": {
+       "Ref": "narutoapitableBA248BDC"
+      },
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "put-naruto-lambda-function",
+    "Handler": "index.handler",
+    "Runtime": "nodejs14.x"
+   },
+   "DependsOn": [
+    "PutNarutoLambdaServiceRoleDefaultPolicy1158CA3D",
+    "PutNarutoLambdaServiceRoleFC1C9726"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/PutNarutoLambda/Resource",
+    "aws:asset:path": "asset.4e090b43e678c37cf56ec441680bbcd89af876f4c9f005e7829d9648d74586e3",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "narutoapi3B6B8B26": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "Naruto Api"
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/Resource"
+   }
+  },
+  "narutoapiCloudWatchRoleD44FB216": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/CloudWatchRole/Resource"
+   }
+  },
+  "narutoapiAccountBBD33226": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "narutoapiCloudWatchRoleD44FB216",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "narutoapi3B6B8B26"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/Account"
+   }
+  },
+  "narutoapiDeployment9285D2406913bdfa6f470adb62c6e25023d1e386": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "narutoapi3B6B8B26"
+    },
+    "Description": "Automatically created by the RestApi construct"
+   },
+   "DependsOn": [
+    "narutoapinarutoGET88DB1CB8",
+    "narutoapinaruto21A3C094"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/Deployment/Resource"
+   }
+  },
+  "narutoapiDeploymentStageprod8A849BCF": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "narutoapi3B6B8B26"
+    },
+    "DeploymentId": {
+     "Ref": "narutoapiDeployment9285D2406913bdfa6f470adb62c6e25023d1e386"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "narutoapiAccountBBD33226"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/DeploymentStage.prod/Resource"
+   }
+  },
+  "narutoapinaruto21A3C094": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "narutoapi3B6B8B26",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "naruto",
+    "RestApiId": {
+     "Ref": "narutoapi3B6B8B26"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/Default/naruto/Resource"
+   }
+  },
+  "narutoapinarutoGETApiPermissionRestApiCdkStacknarutoapi7B6EEF6CGETnaruto702A1220": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "GetNarutoLambdaAE0E87EA",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "narutoapi3B6B8B26"
+       },
+       "/",
+       {
+        "Ref": "narutoapiDeploymentStageprod8A849BCF"
+       },
+       "/GET/naruto"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/Default/naruto/GET/ApiPermission.RestApiCdkStacknarutoapi7B6EEF6C.GET..naruto"
+   }
+  },
+  "narutoapinarutoGETApiPermissionTestRestApiCdkStacknarutoapi7B6EEF6CGETnaruto6D9343BE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "GetNarutoLambdaAE0E87EA",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "narutoapi3B6B8B26"
+       },
+       "/test-invoke-stage/GET/naruto"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/Default/naruto/GET/ApiPermission.Test.RestApiCdkStacknarutoapi7B6EEF6C.GET..naruto"
+   }
+  },
+  "narutoapinarutoGET88DB1CB8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "GET",
+    "ResourceId": {
+     "Ref": "narutoapinaruto21A3C094"
+    },
+    "RestApiId": {
+     "Ref": "narutoapi3B6B8B26"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "GetNarutoLambdaAE0E87EA",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/naruto-api/Default/naruto/GET/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VQyU7DMBD9lt6dQSkIiWNaxIlNgXs0sYfgJLaj2KaKovw7XgqF01s073nGe9jfQbnDky24GIpRtrC+OeQDC1azikWjMiKY79iOxI4fOpGNjahagY02gnoLzwkevOZOGs0kKlhrkwMJX80o+RJlZhuz1w1aS85CFSFoOHg+kDugpXM9rCHw2xrDNCtpbVAbw0l26OiEC6yPabwm66pJpkcvtOLceO3YPU2jWRQFGtw/KtzbpU0zCVHjZ05pjx9x7sz8idynEdHKbNsuc+mYWCR1FydevJu8+xcP/Gi0kC6dEX8Qenv1Vd5CeQP7XW+lLOawsVQEdcZvOydVfqcBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "RestApiCdkStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "narutoapiEndpoint0679112F": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "narutoapi3B6B8B26"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "narutoapiDeploymentStageprod8A849BCF"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "APIURL": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "narutoapi3B6B8B26"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "narutoapiDeploymentStageprod8A849BCF"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
